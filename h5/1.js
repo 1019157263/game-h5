@@ -16,12 +16,13 @@ var yuan= {
 var sw={
 	x:randomNum(0,canvas.width),
 	y:randomNum(0,canvas.height),
-	zb:[]
+	zb:[],
+	create_Sw:function(num=20){	
+		for(var i=0;i<num;i++){//生成20个食物
+			sw.zb.push([randomNum(0,canvas.width),randomNum(0,canvas.height/2)])
+			}
+	},
 }
-for(var i=0;i<20;i++){//生成20个食物
-	sw.zb.push([randomNum(0,canvas.width),randomNum(0,canvas.height/2)])
-	}
-
 function getLocation(x, y) {
 	var bbox = canvas.getBoundingClientRect();
 	return {
@@ -73,30 +74,64 @@ function myFunction1(event,xx=10){
 	}
 }
 function myFunction2(event){
-	// console.log("按下")
 	var location = getLocation(event.clientX, event.clientY);
 	var touch = event.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
-　　//startPos = {x:touch.pageX,y:touch.pageY}; //取第一个touch的坐标值
 	x= startPos.x
 	y= startPos.y
 	console.log("松开")
 		if(x>tx && x<2*tx && y>ty && y<2*ty){
 		console.log("开火")
-		zd_zb.push([yuan.x,yuan.y])
+		amunzthion.zd_zb.push([yuan.x,yuan.y])
 	}
 	for(var key in keysDown){
 		delete keysDown[key];
 	}
-
 }
-var zd_zb=[]
+var amunzthion={//弹药
+	zd_zb:[],
+	amunzthion_Show:function(){
+		//显示子弹
+			flx=1
+			for(var i=0;i<amunzthion.zd_zb.length;i++){
+				zd_x=amunzthion.zd_zb[i][0]
+				zd_y=amunzthion.zd_zb[i][1]
+				amunzthion.zd_zb[i][1]-=5
+				for (var o = 0; o < sw.zb.length; o++) {
+					sw_x=sw.zb[o][0]
+					sw_y=sw.zb[o][1]
+				zd_z = Math.abs(((sw_x-zd_x)**2+(sw_y-zd_y)**2)**0.5)
+				if (zd_z<10){
+					sw.zb.splice(o,1)
+					sw.zb.push([randomNum(0,canvas.width),randomNum(0,canvas.height/2)])
+					amunzthion.zd_zb.splice(i,1)
+					yuan.r += xx/8;
+					val+=1
+					//限制大小
+					if(yuan.r>r_max){
+						yuan.r=r_max
+					}
+					flx=0
+					continue
+				}
+				}
+				if(flx==0){
+					flx=1
+					continue
+				}
+				if(amunzthion.zd_zb[i][1]>0){
+					ctx_Write(colour="#FF0000",X=zd_x,Y=zd_y,R=3)
+				}
+	
+			}
+}
+}
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
 }, false);
 
 addEventListener("keyup", function (e) {
 	if (e.keyCode==32){
-		zd_zb.push([yuan.x,yuan.y])
+		amunzthion.zd_zb.push([yuan.x,yuan.y])
 	}
 	delete keysDown[e.keyCode];
 }, false);
@@ -130,9 +165,8 @@ var update = function (xx=10) {
 		yuan.x += xx;
 	}
 	if (32 in keysDown) { //  发射子弹
-		//zd_zb.push([yuan.x,yuan.y])//注释掉这段即可关闭全自动模式
+		//amunzthion.zd_zb.push([yuan.x,yuan.y])//注释掉这段即可关闭全自动模式
 	}
-
 	if(yuan.x>canvas.width){
 		yuan.x=canvas.width
 	}
@@ -172,9 +206,7 @@ var update = function (xx=10) {
 var render = function () {
 		//清空画布
 		canvas.height=canvas.height; //清空画布
-		//显示子弹
-
-		ctx = canvas.getContext("2d");
+		amunzthion.amunzthion_Show()//显示子弹
 		ctx_Write(colour="#000000",X=yuan.x,Y=yuan.y,R=yuan.r)//画飞机
 		text_Write(colour="#FFFFFF",VAL=val,X=yuan.x,Y=yuan.y+4)//画分数
 		for(var i=0;i<sw.zb.length;i++){
@@ -186,4 +218,5 @@ var main=function () {
 		render()
 		requestAnimationFrame(main);
 }
+sw.create_Sw(num=20)//生成20个食物
 main()
