@@ -2,8 +2,7 @@ import requests
 from bs4 import BeautifulSoup 
 import smtplib
 from email.mime.text import MIMEText
-
-
+import os,time
 su_old=24
 def faemeil(xxx='默认'):
 		subject = "成绩通知件"
@@ -22,9 +21,13 @@ def faemeil(xxx='默认'):
 		    smtp.sendmail(sender, [receiver], message.as_string())
 		    smtp.close()
 
-
+#while 1:
 for i in range(1):
-
+	print("sleep 10s")
+	#time.sleep(10)
+	for i in range(100):
+		time.sleep(0.1)
+		print(i,end="\r")
 	s = requests.Session()
 
 	hea={
@@ -56,6 +59,7 @@ for i in range(1):
 	li=soup.find_all("meta")
 
 	token=li[5]['content']
+	f=open("xx.log","w").write(token)
 
 	hea={
 	"Host":"pro.mysuse.cn",
@@ -72,9 +76,14 @@ for i in range(1):
 	c=s.get(url3,headers=hea)
 	js=c.json()
 	su=(len(js['grades']))
+	os.system('cls')
 	print(su)
+	print("令牌："+token)
+	print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 	li=[ f"课程名称：{i['kcmc']}，成绩：{i['cj']}" for i in js['grades']]
-	print('</br>\n'.join(li))
+	
+	print('\n'.join(li))
 	if su>su_old:
 		faemeil('</br>\n'.join(li))
 	su_old=su
+
