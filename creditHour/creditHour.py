@@ -101,7 +101,7 @@ class Loginer():
     				'xqm':'',
     				'_search':'false',
     				'nd':'1552022952332',
-    				'queryModel.showCount':'15',
+    				'queryModel.showCount':'5000',
     				'queryModel.currentPage':'1',
     				'queryModel.sortName':'',
     				'queryModel.sortOrder':'asc',
@@ -145,11 +145,96 @@ class Loginer():
     def sycb(self):    
         pass    
 a = Loginer('16011038025', 'a1019157263')  # 用户名，密码
+#a = Loginer('16011038026', 'zyj666')  # 用户名，密码
 a.reflush_time()  # 时间
 a.get_csrftoken()  # 获取动态令牌
 a.get_public()  # 获取动态公钥
 a.post_data()  # 登陆
-a.chengji()#成绩
 a.gerenxx()  # 个人信息
+data=a.chengji()['items']#成绩
+print(f"识别出一共有{len(data)}门课")
+
+
+hx=[
+#机械制造方向
+"高等数学(二)",
+"高等数学A",
+"电工电子基础",
+"工程制图A",
+"互换性与测量技术基础",
+"机械工程材料B",
+"材料力学",
+"机械原理",
+"机械设计",
+"机械制造技术基础A",
+"机电传动控制",
+"生产实习",
+"机械制造装备设计",
+"先进制造技术",
+"机制专业综合课程设计",
+#机械设计方向
+"高等数学A",
+"电工电子基础",
+"工程制图A",
+"互换性与测量技术基础",
+"机械工程材料B",
+"材料力学",
+"机械原理",
+"机械设计",
+"机械制造技术基础A",
+"机电传动控制",
+"生产实习",
+"机械设计学",
+"机械系统设计",
+"机设专业综合课程设计",
+]
+
+xx=0
+xf_jd=0
+xf=0
+for i in data:
+        if 'xf' in i.keys():
+            xx+=1
+            xf_jd=xf_jd+(float(i['jd'])*float(i['xf']))
+            xf+=float(i['xf'])
+            print(f"{xx}课程名称：{i['kcmc']},绩点：{i['jd']},学分：{i['xf']}")
+        else:
+            print(f"[异常]{i['kcmc']}没有学分或绩点")
+
+credit_pj=xf_jd/xf
+print(f'总（学分*绩点）={xf_jd}')
+print(f'总（学分）={xf}')
+print(f'总（学分*绩点）/学分={credit_pj}')
+
+#专业
+print('学位绩点'+"-"*50)
+xx=0
+xf_jd=0
+xf=0
+
+strxx=''
+strxfh=''
+for i in data:
+        if i['kcmc'] in hx:
+            if 'xf' in i.keys():
+                strxx=strxx+f"+({i['jd']}*{i['xf']})"
+                strxfh+=f"+{i['xf']}"
+                xx+=1
+                xf_jd=xf_jd+(float(i['jd'])*float(i['xf']))
+                xf+=float(i['xf'])
+                print(f"{xx}课程名称：{i['kcmc']},绩点：{i['jd']},学分：{i['xf']}")
+            else:
+                print(f"[异常]{i['kcmc']}没有学分或绩点")
+
+credit_pj=xf_jd/xf
+print(f'总（学分*绩点）={xf_jd}')
+print(f'总（学分）={xf}')
+print(f'总（学分*绩点）/学分={credit_pj}')
+print(f"绩点×学分的和算式为：{strxx[1::]}={xf_jd}")
+print(f"学分的和算式为：{strxfh[1::]}={xf}")
+print(f"平均学分绩点的算式为：({strxx[1::]})/({strxfh[1::]})={credit_pj}")
+
+
+
 # a.kecb()  # 课程表
 # 登陆类结束
