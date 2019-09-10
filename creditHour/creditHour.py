@@ -1,10 +1,12 @@
-import requests
-import time
-import RSAJS
-import sys
 import json
 import re
+import sys
+import time
+
+import requests
 from bs4 import BeautifulSoup
+
+import RSAJS
 from hex2b64 import HB64
 
 
