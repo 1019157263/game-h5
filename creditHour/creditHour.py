@@ -133,6 +133,7 @@ class Loginer():
     	}
         data_b=self.sessions.post(url_b,data=suju_b)
         #print(data_b.text)
+        
         data_b=data_b.json()
         #print(json.dumps(data_b, ensure_ascii=False,sort_keys=True, indent=4, separators=(',', ': ')))
         li=[]
@@ -144,7 +145,11 @@ class Loginer():
         return li
     def sycb(self):    
         pass    
-a = Loginer('16011038025', 'a1019157263')  # 用户名，密码
+# name=input('username：')
+# pwd=input('pwd：')
+# a = Loginer(name, pwd)  # 用户名，密码1
+a = Loginer('16011038025', 'a1019157263') 
+#a = Loginer('16011038023', 'zyx19960130') 
 #a = Loginer('16011038026', 'zyj666')  # 用户名，密码
 a.reflush_time()  # 时间
 a.get_csrftoken()  # 获取动态令牌
@@ -214,9 +219,14 @@ xf=0
 
 strxx=''
 strxfh=''
+
+data_credit={
+}
+
 for i in data:
         if i['kcmc'] in hx:
             if 'xf' in i.keys():
+                data_credit[i['kcmc']]=[i['jd'],i['xf']]
                 strxx=strxx+f"+({i['jd']}*{i['xf']})"
                 strxfh+=f"+{i['xf']}"
                 xx+=1
@@ -225,14 +235,31 @@ for i in data:
                 print(f"{xx}课程名称：{i['kcmc']},绩点：{i['jd']},学分：{i['xf']}")
             else:
                 print(f"[异常]{i['kcmc']}没有学分或绩点")
+# print(data_credit)
+xj_new=0
+xfh_new=0
+strxx_n=''
+strxfh_n=''
+for itme in data_credit.values():
+    # print(itme)
+    xj_new+=float(itme[0])*float(itme[1])
+    xfh_new+=float(itme[1])
+    strxx_n=strxx_n+f"+({itme[0]}*{itme[1]})"
+    strxfh_n+=f"+{itme[1]}"
 
-credit_pj=xf_jd/xf
-print(f'总（学分*绩点）={xf_jd}')
-print(f'总（学分）={xf}')
+# print(xj_new)
+# print(xfh_new)
+# print(strxx_n)
+# print(strxfh_n)
+
+credit_pj=xj_new/xfh_new
+print(f'总（学分*绩点）={xj_new}')
+print(f'总（学分）={xfh_new}')
 print(f'总（学分*绩点）/学分={credit_pj}')
-print(f"绩点×学分的和算式为：{strxx[1::]}={xf_jd}")
-print(f"学分的和算式为：{strxfh[1::]}={xf}")
-print(f"平均学分绩点的算式为：({strxx[1::]})/({strxfh[1::]})={credit_pj}")
+
+print(f"绩点×学分的和算式为：{strxx_n[1::]}={xj_new}")
+print(f"学分的和算式为：{strxfh_n[1::]}={xfh_new}")
+print(f"平均学分绩点的算式为：({strxx_n[1::]})/({strxfh_n[1::]})={credit_pj}")
 
 
 
