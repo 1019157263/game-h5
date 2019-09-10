@@ -262,6 +262,7 @@ print(f"学分的和算式为：{strxfh_n[1::]}={xfh_new}")
 print(f"平均学分绩点的算式为：({strxx_n[1::]})/({strxfh_n[1::]})={credit_pj}")
 
 
-
+zhao=0
+zhao+=2
 # a.kecb()  # 课程表
 # 登陆类结束
