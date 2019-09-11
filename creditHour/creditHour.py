@@ -243,7 +243,7 @@ xf = 0
 
 strxx = ''
 strxfh = ''
-
+print('核心课程信息：'+"-"*50)
 data_credit = {
 }
 
@@ -264,12 +264,18 @@ xj_new = 0
 xfh_new = 0
 strxx_n = ''
 strxfh_n = ''
+num=0
+print('核心最新数据：'+"-"*50)
+li=[oo for oo in data_credit.keys()]
 for itme in data_credit.values():
     # print(itme)
+    num+=1
     xj_new += float(itme[0])*float(itme[1])
     xfh_new += float(itme[1])
     strxx_n = strxx_n+f"+({itme[0]}*{itme[1]})"
     strxfh_n += f"+{itme[1]}"
+    print(f"{num}课程名称：{li[num-1]},绩点：{itme[0]},学分：{itme[1]}")
+    
 
 # print(xj_new)
 # print(xfh_new)
