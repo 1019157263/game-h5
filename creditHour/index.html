@@ -9,13 +9,18 @@
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
     <title>核心平均学分绩点算法</title>
 </head>
 
 <body>
 
-    <div class="container-fluid">
+    <div id="box" class="container-fluid">
         <center>
             <div>
                 <h1>机自专业核心平均学分绩点工具</h1>
@@ -27,7 +32,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <h2>登录以计算你的平均学分绩点</h2>
+                            <h2> {{ info }}登录以计算你的平均学分绩点</h2>
                             <form>
                                 <div class="form-group">
                                     <label for="usr">学号:</label>
@@ -38,6 +43,7 @@
                                     <input placeholder="请输入你的密码..." type="password" class="form-control" id="pwd">
                                 </div>
                                 <button type="button" class="btn btn-primary btn-block">登录</button>
+                                <button @click="get()" type="button" class="btn btn-primary btn-block">测试键</button>
                             </form>
                         </div>
                     </div>
@@ -173,8 +179,13 @@
                 </div>
             </div>
         </div>
+
     </div>
 
+
+
+
+    <script src="main.js"></script>
 </body>
 
 </html>

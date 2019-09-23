@@ -169,10 +169,10 @@ class Loginer():
         pass
 
 
-# name=input('username：')
-# pwd=input('pwd：')
-# a = Loginer(name, pwd)  # 用户名，密码1
-a = Loginer('16011038025', 'a1019157263')
+name=input('username：')
+pwd=input('pwd：')
+a = Loginer(name, pwd)  # 用户名，密码1
+# a = Loginer('16011038025', 'a1019157263')
 #a = Loginer('16011038023', 'zyx19960130')
 # a = Loginer('16011038026', 'zyj666')  # 用户名，密码
 a.reflush_time()  # 时间

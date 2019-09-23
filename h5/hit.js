@@ -1,0 +1,153 @@
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+canvas.width = 800;
+canvas.height = 600;
+canvas.style = "border:5px solid #000000;";
+function randomNum(minNum, maxNum) {
+    switch (arguments.length) {
+        case 1:
+            return parseInt(Math.random() * minNum + 1, 10);
+            break;
+        case 2:
+            return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+function ctx_Write(colour = "#FF0000", X = X, Y = Y, R = R) {
+    ctx.beginPath()
+    ctx.fillStyle = colour;
+    ctx.arc(X, Y, R, 0, 360);
+    ctx.fill()
+    ctx.closePath()
+}
+Li = []
+
+dx = {
+    x: 0,
+    b: 0,
+    r: 30,
+    k: 1,
+    y: 0,
+    ff: 0,
+}
+
+for (var i = 0; i < 500; i++) {//生成20个食物
+    Li.push(
+        {
+            x: randomNum(0, canvas.width),
+            b: randomNum(0, canvas.height),
+            r: randomNum(1,5),
+            k: Math.random(),
+            y: randomNum(0, canvas.height),
+            ff: randomNum(0, 1),
+            ys: randomNum(0, 999999),
+            rate: randomNum(1, 5)
+        }
+    )
+}
+
+
+
+rate = 1
+xx = 1
+var update = function () {
+
+    for (var o = 0; o < Li.length; o++) {
+        if (xx == 0) {
+            xx = 1
+           // console.log("跳出")
+            break
+        }
+        for (var i = 0; i < Li.length; i++) {
+            if (i == o) {
+                continue
+            }
+             try{               
+                            x1 = Li[o].x
+                            x2 = Li[i].x
+                            y1 = Li[o].y
+                            y2 = Li[i].y
+                            z = Math.abs(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5) - Li[o].r
+                            if (z < Li[i].r) {
+                            // console.log("吃掉")
+                                if (Li[o].r > Li[i].r) {
+                                    Li[o].r += 1
+                                    Li.splice(i, 1)
+                                    xx = 0
+                                // console.log("吃1")
+                                    o = o - 1
+                                    i = i - 1
+                                    continue
+
+                                }
+                                if (Li[o].r < Li[i].r) {
+                                    Li[i].r += 1
+                                    Li.splice(o, 1)
+                                    xx = 0
+                                    //console.log("吃2")
+                                    o = o - 1
+                                    i = i - 1
+                                    continue
+                                }
+                            }
+
+                        } catch (exception) {
+                            console.log(exception.message);
+                        }
+        }
+
+        try {
+            if (Li[o].ff == 0) {//往右
+
+                Li[o].y = Li[o].k * (Li[o].x + Li[o].rate - Li[o].x) + Li[o].y
+                Li[o].x = Li[o].x + Li[o].rate
+                if (Li[o].x > canvas.width) {
+                    Li[o].ff = 1
+                    Li[o].k = Li[o].k * -1
+                }
+                if (Li[o].y > canvas.height) {
+                    Li[o].k = Li[o].k * -1
+                }
+                if (Li[o].y < 0) {
+                    Li[o].k = Li[o].k * -1
+                }
+            }
+            if (Li[o].ff == 1) {//往左
+                Li[o].y = Li[o].k * (Li[o].x - Li[o].rate - Li[o].x) + Li[o].y
+                Li[o].x = Li[o].x - Li[o].rate
+                if (Li[o].y > canvas.height) {
+                    Li[o].k = Li[o].k * -1
+                }
+                if (Li[o].y < 0) {
+                    Li[o].k = Li[o].k * -1
+                }
+                if (Li[o].x < 0) {
+                    Li[o].ff = 0
+                    Li[o].k = Li[o].k * -1
+
+                }
+
+            }
+        } catch (exception) {
+            console.log(exception.message);
+        }
+    }
+
+}
+
+var render = function () {
+    canvas.height = canvas.height;
+    for (var o = 0; o < Li.length; o++) {
+        ctx_Write(colour = "#" + Li[o].ys, X = Li[o].x, Y = Li[o].y, R = Li[o].r)
+    }
+}
+var main = function () {
+    update()
+    render()
+    requestAnimationFrame(main);
+}
+main()
