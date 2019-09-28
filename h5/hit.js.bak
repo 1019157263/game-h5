@@ -2,7 +2,7 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 canvas.width = 400;
 canvas.height = 650;
-//canvas.style = "border:5px solid #000000;";
+canvas.style = "border:5px solid #000000;";
 function randomNum(minNum, maxNum) {
     switch (arguments.length) {
         case 1:
